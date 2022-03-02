@@ -1,3 +1,5 @@
+import api from '../api/api';
+
 import { useState } from 'react';
 import URL from '../utils/URL';
 import {
@@ -10,13 +12,44 @@ import {
   UsernameInput,
 } from '../components/login-signup';
 
-const Login = () => {
-  const [submitting, setSubmitting] = useState(true);
+import { useContext } from 'react';
+import userContext from '../utils/userContext';
+
+import io from 'socket.io-client';
+
+const Login = ({ socket }) => {
+  const { setLoggedUser } = useContext(userContext);
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const [formError, setFormError] = useState('');
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmit = () => console.log('logging in');
+  const onLogin = () => {
+    socket.emit('username', username);
+
+    socket.on('connected', () => {
+      setLoggedUser(username);
+    });
+  };
+
+  const onSubmit = async () => {
+    if (submitting) return;
+
+    setFormError('');
+    setSubmitting(true);
+
+    const dbPassword = (await api.get(`/users/${username}/password`)).data
+      .rows[0]?.password;
+
+    if (!dbPassword) setFormError('This account is not registered!');
+    else if (dbPassword === password) onLogin();
+    else if (dbPassword !== password) setFormError('Incorrect password.');
+
+    setSubmitting(false);
+  };
 
   return (
     <Base bgColor="login-bg">
@@ -36,7 +69,8 @@ const Login = () => {
             onSubmit={onSubmit}
             submitText="Login"
             submitting={submitting}
-            inputError={username.length < 1 || password.length < 1}
+            formError={formError}
+            inputError={username.length < 5 || password.length < 5}
           >
             <UsernameInput
               placeholder="Type your username"

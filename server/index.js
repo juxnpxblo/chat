@@ -4,6 +4,41 @@ const inHeroku = !!process.env.DYNO;
 const express = require('express');
 const app = express();
 
+const axios = require('axios');
+
+const http = require('http');
+const server = http.createServer(app);
+
+const io = require('socket.io')(server, {
+  transports: ['websocket', 'polling'],
+});
+
+const users = {};
+
+io.on('connection', (client) => {
+  client.on('username', (username) => {
+    const user = {
+      username,
+      id: client.id,
+    };
+    users[client.id] = user;
+
+    io.emit('connected');
+  });
+
+  client.on('new message', async (newMessage) => {
+    const res = await axios.post('http://localhost:5000/api/chat', {
+      message: newMessage,
+      sender: users[client.id].username,
+    });
+    io.emit('new message', res.data.rows[0]);
+  });
+
+  client.on('disconnect', () => {
+    delete users[client.id];
+  });
+});
+
 const cors = require('cors');
 app.use(cors());
 
@@ -24,4 +59,6 @@ if (inHeroku) {
   });
 }
 
-app.listen(PORT, () => console.log(`running at http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`running at http://localhost:${PORT}`));
+
+// app.listen(PORT, () => console.log(`running at http://localhost:${PORT}`));

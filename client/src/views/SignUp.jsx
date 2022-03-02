@@ -1,4 +1,7 @@
+import api from '../api/api';
+
 import { useState, useEffect } from 'react';
+
 import URL from '../utils/URL';
 import {
   Base,
@@ -11,7 +14,10 @@ import {
 } from '../components/login-signup';
 
 const SignUp = () => {
-  const [submitting, setSubmitting] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+
+  const [formSuccess, setFormSuccess] = useState('');
+  const [formError, setFormError] = useState('');
 
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
@@ -39,7 +45,26 @@ const SignUp = () => {
     setPasswordError(passwordErrorCheck());
   });
 
-  const onSubmit = () => console.log('registering');
+  const onSubmit = async () => {
+    if (submitting) return;
+    else setSubmitting(true);
+
+    setFormSuccess('');
+    setFormError('');
+    setPassword('');
+    setUsername('');
+    const code = (await api.post('/users', { username, password })).data.code;
+    if (code === '23505') {
+      setSubmitting(false);
+      setFormError('This username is already registered!');
+    } else if (code === 1) {
+      setSubmitting(false);
+      setFormSuccess('Account created! You can now sign in.');
+    } else {
+      setSubmitting(false);
+      setFormError('Something went wrong. Try Again.');
+    }
+  };
 
   return (
     <Base bgColor="signup-bg">
@@ -59,6 +84,8 @@ const SignUp = () => {
             onSubmit={onSubmit}
             submitText="Sign up"
             submitting={submitting}
+            formSuccess={formSuccess}
+            formError={formError}
             inputError={usernameError || passwordError ? true : false}
           >
             <UsernameInput

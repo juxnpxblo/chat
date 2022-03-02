@@ -2,58 +2,58 @@ import api from '../api/api';
 
 import { useState, useRef, useEffect } from 'react';
 
-import { Message } from '../components/chat/';
+import { Message, Form } from '../components/chat/';
 
-import { RiSendPlaneFill } from 'react-icons/ri';
+import { useContext } from 'react';
+import userContext from '../utils/userContext';
 
-const Chat = () => {
+const dates = [];
+
+const Chat = ({ socket }) => {
+  const [printDate, setPrintDate] = useState(false);
+
+  const { loggedUser } = useContext(userContext);
+
   const [messages, setMessages] = useState([]);
 
   const MessagesBoxRef = useRef(null);
 
-  const fetchMessages = async () => {
-    const res = await api.get('/chat');
-    setMessages(res.data);
-    MessagesBoxRef.current.scrollTop = MessagesBoxRef.current.scrollHeight;
-  };
+  const scroll = () =>
+    (MessagesBoxRef.current.scrollTop = MessagesBoxRef.current.scrollHeight);
 
   useEffect(() => {
-    fetchMessages();
-  }, []);
+    (async () => {
+      const res = await api.get('/chat');
+      setMessages(res.data);
+      scroll();
+    })();
+
+    socket.on('new message', ({ sender, message, date }) => {
+      setMessages((messages) => [...messages, { sender, message, date }]);
+      scroll();
+    });
+  }, [socket]);
 
   return (
-    <div className="h-[100vh] flex">
-      <div className="grow h-full flex flex-col">
-        <div
-          ref={MessagesBoxRef}
-          className="bg-white grow overflow-y-scroll flex flex-col gap-4 px-2 pt-4 pb-16"
-        >
-          {messages.map(({ sender, message, date }, i) => (
-            <Message key={i} sender={sender} message={message} date={date} />
-          ))}
-        </div>
-        <div className="bg-transparent relative w-full z-10">
-          <form
-            className=" flex absolute bottom-0 w-full"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="grow pl-4 pr-16 pb-3">
-              <input
-                type="text"
-                placeholder="Type your message..."
-                className="w-full outline-none border rounded-lg p-2.5 focus:border-[#262626]"
-              />
-            </div>
-            <label>
-              <input type="submit" value=" " className="" />
-              <RiSendPlaneFill
-                size={28}
-                color="#146aff"
-                className="absolute top-2 right-8 cursor-pointer"
-              />
-            </label>
-          </form>
-        </div>
+    <div className="h-[100vh] shadow-2xl rounded-lg mx-auto border max-w-[1024px] flex flex-col scroll-smooth overflow-auto">
+      <div
+        ref={MessagesBoxRef}
+        className="bg-white grow overflow-y-scroll flex flex-col gap-4 px-4 pt-4 pb-[4.5rem] overflow-x-hidden overflow-auto"
+      >
+        {messages.map(
+          ({ sender, self = sender === loggedUser, message, date }, i) => (
+            <Message
+              key={i}
+              self={self}
+              sender={sender}
+              message={message}
+              date={date}
+            />
+          )
+        )}
+      </div>
+      <div className="bg-transparent relative w-full z-10">
+        <Form socket={socket} />
       </div>
     </div>
   );

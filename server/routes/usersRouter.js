@@ -1,5 +1,7 @@
 const pool = require('../db');
 
+let client, released;
+
 const releaseClient = () => {
   if (!released) {
     client.release();

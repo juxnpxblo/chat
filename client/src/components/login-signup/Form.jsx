@@ -1,23 +1,16 @@
-// import { useState, useEffect } from 'react';
-
 import { Submit } from '.';
 
-// import { VscError } from 'react-icons/vsc';
+import { VscError, VscPass } from 'react-icons/vsc';
 
 const Form = ({
   children,
   onSubmit,
   submitText,
   inputError,
-  errorCheck,
+  formError,
+  formSuccess,
   submitting,
 }) => {
-  // const [error, setError] = useState('');
-
-  // useEffect(() => {
-  //   setError(errorCheck());
-  // }, [errorCheck]);
-
   return (
     <form
       className="select-none relative"
@@ -26,18 +19,26 @@ const Form = ({
         if (!inputError) onSubmit();
       }}
     >
-      {/* {error ? (
+      {formError ? (
         <p className="absolute text-red-500 text-sm flex items-center -top-2 font-medium gap-1">
           <VscError size={20} />
           <span>
-            {error}
-            This username is already registered. The username or password is
-            incorrect.
+            {formError}
+            {/* This username is already registered. The username or password is
+            incorrect. */}
           </span>
         </p>
       ) : (
         ''
-      )} */}
+      )}
+      {formSuccess ? (
+        <p className="absolute text-green-500 text-sm flex items-center -top-2 font-medium gap-1">
+          <VscPass size={20} />
+          <span>{formSuccess}</span>
+        </p>
+      ) : (
+        ''
+      )}
       {children}
       <div className="mt-14">
         <Submit

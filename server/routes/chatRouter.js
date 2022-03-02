@@ -44,12 +44,12 @@ chatRouter
       client = await pool.connect();
       released = false;
 
-      await client.query(
-        'INSERT INTO messages (message, sender, date) VALUES ($1, $2, now()',
+      const response = await client.query(
+        'INSERT INTO messages (message, sender, date) VALUES ($1, $2, now()) RETURNING *',
         [message, sender]
       );
 
-      res.json('message inserted');
+      res.json(response);
     } catch (err) {
       console.error(err.message);
     } finally {

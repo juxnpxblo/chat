@@ -4,19 +4,15 @@ import { ProfilePicIcon } from '.';
 
 const Message = ({ self, sender, message, date }) => {
   date = new Date(date);
-  self = false;
-
   return (
     <div
       className={`${
         self ? 'flex-row-reverse' : ''
       } flex items-center gap-2 mb-3`}
     >
-      {!self && (
-        <div className="cursor-pointer">
-          <ProfilePicIcon size={32} />
-        </div>
-      )}
+      <div className="cursor-pointer">
+        <ProfilePicIcon />
+      </div>
 
       <div className={`${self ? 'flex-col items-end' : ''} grow relative flex`}>
         <div
@@ -38,7 +34,13 @@ const Message = ({ self, sender, message, date }) => {
             self ? 'right-1' : 'left-1'
           } absolute -bottom-[18px] select-none text-[11px] font-light pt-1 w-fit self-end`}
         >
-          {`${date.toDateString()} ${date.getHours()}:${date.getMinutes()}`}
+          {`${date.getHours()}:${
+            date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+          }
+          ${date.getMonth() + 1}/${date.getDate()}/${date
+            .getFullYear()
+            .toString()
+            .slice(2)}`}
         </p>
       </div>
     </div>
