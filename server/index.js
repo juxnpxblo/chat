@@ -28,7 +28,11 @@ io.on('connection', (client) => {
 
   client.on('new message', async ({ message, sender }) => {
     const res = await axios.post(
-      `${inHeroku ? '/api/chat' : 'http://localhost:5000/api/chat'}`,
+      `${
+        inHeroku
+          ? 'https://chat-juxnpxblo.herokuapp.com/api/chat'
+          : 'http://localhost:5000/api/chat'
+      }`,
       {
         message,
         sender,
