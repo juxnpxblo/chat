@@ -1,30 +1,17 @@
-import api from '../api/api';
-
 import { useState, useRef, useEffect } from 'react';
+
+import api from '../api/api';
 
 import { Message, Form } from '../components/chat/';
 
-import { useContext } from 'react';
-import userContext from '../utils/userContext';
-
-const dates = [];
-
-const Chat = ({ socket }) => {
-  const [printDate, setPrintDate] = useState(false);
-
-  const { loggedUser } = useContext(userContext);
-
+const Chat = ({ loggedUser, socket }) => {
   const [messages, setMessages] = useState([]);
 
   const MessagesBoxRef = useRef(null);
 
-  const scroll = () =>
-    (MessagesBoxRef.current.scrollTop = MessagesBoxRef.current.scrollHeight);
-
   useEffect(() => {
     (async () => {
-      const res = await api.get('/chat');
-      setMessages(res.data);
+      setMessages((await api.get('/chat')).data);
       scroll();
     })();
 
@@ -34,12 +21,15 @@ const Chat = ({ socket }) => {
     });
   }, [socket]);
 
+  const scroll = () =>
+    (MessagesBoxRef.current.scrollTop = MessagesBoxRef.current.scrollHeight);
+
   return (
     <div className="h-[100vh] rounded-lg mx-auto max-w-[796px]">
-      <div className="h-full flex flex-col gap-2 mx-4 py-3">
+      <div className="h-full flex flex-col mx-4 py-3 ">
         <div
           ref={MessagesBoxRef}
-          className="bg-white rounded-lg overflow-y-scroll flex flex-col gap-4 p-4 overflow-x-hidden"
+          className="bg-white rounded-t-lg overflow-y-scroll flex flex-col gap-4 p-4 overflow-x-hidden"
         >
           {messages.map(
             ({ sender, self = sender === loggedUser, message, date }, i) => (
@@ -53,6 +43,7 @@ const Chat = ({ socket }) => {
             )
           )}
         </div>
+        <div className="w-full h-[10px] z-20 bg-[#c0c0c0]"></div>
         <Form socket={socket} loggedUser={loggedUser} />
       </div>
     </div>

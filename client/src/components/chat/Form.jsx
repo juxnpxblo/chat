@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { RiSendPlaneFill } from 'react-icons/ri';
 
 const Form = ({ socket, loggedUser }) => {
@@ -21,7 +22,7 @@ const Form = ({ socket, loggedUser }) => {
           onChange={(e) => setNewMessage(e.target.value)}
           maxLength={160}
           placeholder="Type your message..."
-          className="w-full outline-none border rounded-lg p-2.5 pr-[2.9rem] focus:border-[#262626] shadow-lg"
+          className="w-full outline-none border rounded-b-lg p-2.5 pr-[2.9rem]"
         />
       </div>
       <label className="absolute right-1.5 bottom-1.5">
@@ -29,7 +30,7 @@ const Form = ({ socket, loggedUser }) => {
         <div
           className={`${
             newMessage ? 'bg-[#146aff]' : 'bg-[#87b3ff]'
-          } w-[34px] h-[34px] transition-colors shadow-lg border-2 flex items-center justify-center top-0 rounded-md cursor-pointer`}
+          } w-[34px] h-[34px] transition-colors border-2 flex items-center justify-center top-0 rounded-md cursor-pointer`}
         >
           <div>
             <RiSendPlaneFill size={20} color="white" />

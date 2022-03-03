@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { ProfilePicIcon } from '.';
 
 const Message = ({ self, sender, message, date }) => {

@@ -1,48 +1,26 @@
 const PORT = process.env.PORT || 5000;
 const inHeroku = !!process.env.DYNO;
 
+const api = require('./api/api');
+
 const express = require('express');
 const app = express();
-
-const axios = require('axios');
 
 const http = require('http');
 const server = http.createServer(app);
 
-const io = require('socket.io')(server, {
+const io = require('socket.io');
+const socket = io(server, {
   transports: ['websocket', 'polling'],
 });
 
-const users = {};
-
-io.on('connection', (client) => {
-  client.on('username', (username) => {
-    const user = {
-      username,
-      id: client.id,
-    };
-    users[client.id] = user;
-
-    io.emit('connected');
-  });
-
+socket.on('connection', (client) => {
   client.on('new message', async ({ message, sender }) => {
-    const res = await axios.post(
-      `${
-        inHeroku
-          ? 'https://chat-juxnpxblo.herokuapp.com/api/chat'
-          : 'http://localhost:5000/api/chat'
-      }`,
-      {
-        message,
-        sender,
-      }
-    );
-    io.emit('new message', res.data.rows[0]);
-  });
-
-  client.on('disconnect', () => {
-    delete users[client.id];
+    const res = await api.post('/chat', {
+      message,
+      sender,
+    });
+    socket.emit('new message', res.data.rows[0]);
   });
 });
 

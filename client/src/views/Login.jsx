@@ -1,41 +1,24 @@
+import { useState, useEffect } from 'react';
+
 import api from '../api/api';
 
-import { useState, useEffect } from 'react';
-import URL from '../utils/URL';
 import {
   Base,
-  Form,
-  PasswordInput,
-  Subtitle,
-  Title,
   RoundedWhiteBox,
+  Title,
+  Subtitle,
+  Form,
   UsernameInput,
+  PasswordInput,
 } from '../components/login-signup';
 
-import { useContext } from 'react';
-import userContext from '../utils/userContext';
-
-import io from 'socket.io-client';
-
-const Login = ({ socket }) => {
-  useEffect(() => (document.title = 'Chat • Login'), []);
-
-  const { setLoggedUser } = useContext(userContext);
-
-  const [submitting, setSubmitting] = useState(false);
-
-  const [formError, setFormError] = useState('');
-
+const Login = ({ setLoggedUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [formError, setFormError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const onLogin = () => {
-    socket.emit('username', username);
-
-    socket.on('connected', () => {
-      setLoggedUser(username);
-    });
-  };
+  useEffect(() => (document.title = 'Chat • Login'), []);
 
   const onSubmit = async () => {
     if (submitting) return;
@@ -47,46 +30,38 @@ const Login = ({ socket }) => {
       .rows[0]?.password;
 
     if (!dbPassword) setFormError('This account is not registered!');
-    else if (dbPassword === password) onLogin();
+    else if (dbPassword === password) setLoggedUser(username);
     else if (dbPassword !== password) setFormError('Incorrect password.');
 
     setSubmitting(false);
   };
 
   return (
-    <Base bgColor="login-bg">
-      <div className="w-[380px] mx-auto">
-        <RoundedWhiteBox>
-          <div className="mb-1">
-            <Title text="Login" />
-          </div>
-          <div className="mb-4">
-            <Subtitle
-              text="Don't have an account?"
-              link={`${URL}/register`}
-              linkText="Sign up"
-            />
-          </div>
-          <Form
-            onSubmit={onSubmit}
-            submitText="Login"
-            submitting={submitting}
-            formError={formError}
-            inputError={username.length < 5 || password.length < 5}
-          >
-            <UsernameInput
-              placeholder="Type your username"
-              state={username}
-              setState={setUsername}
-            />
-            <PasswordInput
-              placeholder="Type your password"
-              state={password}
-              setState={setPassword}
-            />
-          </Form>
-        </RoundedWhiteBox>
-      </div>
+    <Base
+      title="Login"
+      subText="Don't have an account?"
+      subLink={`${window.location.origin}/register`}
+      subLinkText="Sign up"
+      bgColor="login-bg"
+    >
+      <Form
+        inputError={username.length < 5 || password.length < 5}
+        formError={formError}
+        submitting={submitting}
+        submitText="Login"
+        onSubmit={onSubmit}
+      >
+        <UsernameInput
+          placeholder="Type your username"
+          value={username}
+          setValue={setUsername}
+        />
+        <PasswordInput
+          placeholder="Type your password"
+          value={password}
+          setValue={setPassword}
+        />
+      </Form>
     </Base>
   );
 };

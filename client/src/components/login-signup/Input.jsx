@@ -1,8 +1,7 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
 
 const Input = React.forwardRef(
-  ({ title, icon, type, state, placeholder, setState, error }, ref) => {
+  ({ type, value, setValue, title, placeholder, icon, error }, ref) => {
     return (
       <label>
         <p className="text-sm font-medium mb-3 pt-6">{title}</p>{' '}
@@ -10,22 +9,22 @@ const Input = React.forwardRef(
           {icon}
           <input
             type={type}
-            value={state}
-            ref={ref}
+            value={value}
             placeholder={placeholder}
-            className="outline-none w-full"
             spellCheck="false"
-            onChange={(e) => setState(e.target.value)}
+            className="outline-none w-full"
+            ref={ref}
+            onChange={(e) => setValue(e.target.value)}
           />
         </div>
-        <div className="">
+        <div>
           <div
             className={`${
-              error && state ? 'bg-red-500' : 'bg-[#262626]'
-            } absolute h-[1px] w-[282px] mr-3`}
+              error && value ? 'bg-red-500' : 'bg-[#262626]'
+            } absolute h-[1px] w-full mr-3`}
           ></div>
         </div>
-        {error && state ? (
+        {error && value ? (
           <p className=" text-red-500 text-[11px] pt-1 absolute">{error}</p>
         ) : (
           ''

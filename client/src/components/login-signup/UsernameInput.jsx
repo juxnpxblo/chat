@@ -1,15 +1,15 @@
 import { Input } from '.';
 import { MdOutlinePersonOutline } from 'react-icons/md';
 
-const UsernameInput = ({ placeholder, state, setState, error }) => {
+const UsernameInput = ({ placeholder, value, setValue, error }) => {
   return (
     <Input
       type="text"
+      value={value}
+      setValue={setValue}
       title="Username"
       placeholder={placeholder}
       icon={<MdOutlinePersonOutline className="input-icon" size={20} />}
-      state={state}
-      setState={setState}
       error={error}
     />
   );

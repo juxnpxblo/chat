@@ -1,25 +1,30 @@
+/* Tailwind setup */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Base */
 
 html {
   height: 100%;
 }
 body {
   height: 100%;
-  margin: 0;
-  color: #262626;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #262626;
 }
 #root {
   height: 100vh;
   background-color: #0cbaba;
   background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%);
 }
+
+/* Background gradients */
 
 .login-bg {
   background-color: #20bf55;
@@ -30,18 +35,21 @@ body {
   background-image: linear-gradient(315deg, #d5adc8 0%, #ff8489 74%);
 }
 
+/* Login/Sign up inputs behavior */
+
+/* Icons colors defined here so they can be overwritten here */
 .input-icon {
   color: #9ca3af;
 }
-.input-shadow {
-  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.25);
-}
+
 .input:focus-within ~ div > :first-child {
   height: 2px;
 }
 .input:focus-within :first-child {
   color: #262626;
 }
+
+/* Loading animation */
 
 .rotate-forever {
   animation: rotate-forever 0.7s ease-out infinite both;
@@ -55,10 +63,11 @@ body {
   }
 }
 
+/* Scrollbar  */
+
 ::-webkit-scrollbar {
   width: 4px;
 }
-
 ::-webkit-scrollbar-thumb {
   background: #b4b4b4;
 }

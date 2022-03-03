@@ -1,31 +1,34 @@
-import api from '../api/api';
-
 import { useState, useEffect } from 'react';
 
-import URL from '../utils/URL';
+import api from '../api/api';
+
 import {
   Base,
-  Form,
-  PasswordInput,
-  Subtitle,
-  Title,
   RoundedWhiteBox,
+  Title,
+  Subtitle,
+  Form,
   UsernameInput,
+  PasswordInput,
 } from '../components/login-signup';
 
 const SignUp = () => {
-  const [submitting, setSubmitting] = useState(false);
-
-  const [formSuccess, setFormSuccess] = useState('');
-  const [formError, setFormError] = useState('');
-
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
-
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [formSuccess, setFormSuccess] = useState('');
+  const [formError, setFormError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const usernameErrorCheck = () => {
+  useEffect(() => (document.title = 'Chat • Login'), []);
+
+  useEffect(() => {
+    setUsernameError(getUsernameError());
+    setPasswordError(getPasswordError());
+  });
+
+  const getUsernameError = () => {
     if (username.search(/\W/) !== -1) {
       return 'Only letters and numbers allowed.';
     }
@@ -34,28 +37,23 @@ const SignUp = () => {
     }
   };
 
-  const passwordErrorCheck = () => {
+  const getPasswordError = () => {
     if (password.length < 5 || password.length > 50) {
       return 'Password must be between 5 and 50 characters long.';
     }
   };
 
-  useEffect(() => (document.title = 'Chat • Login'), []);
-
-  useEffect(() => {
-    setUsernameError(usernameErrorCheck());
-    setPasswordError(passwordErrorCheck());
-  });
-
   const onSubmit = async () => {
     if (submitting) return;
-    else setSubmitting(true);
 
-    setFormSuccess('');
-    setFormError('');
-    setPassword('');
+    setSubmitting(true);
     setUsername('');
+    setPassword('');
+    setFormError('');
+    setFormSuccess('');
+
     const code = (await api.post('/users', { username, password })).data.code;
+
     if (code === '23505') {
       setSubmitting(false);
       setFormError('This username is already registered!');
@@ -69,42 +67,34 @@ const SignUp = () => {
   };
 
   return (
-    <Base bgColor="signup-bg">
-      <div className="w-[380px] mx-auto">
-        <RoundedWhiteBox>
-          <div className="mb-1">
-            <Title text="Sign Up" />
-          </div>
-          <div className="mb-4">
-            <Subtitle
-              text="Already have an account?"
-              link={`${URL}/login`}
-              linkText="Sign in"
-            />
-          </div>
-          <Form
-            onSubmit={onSubmit}
-            submitText="Sign up"
-            submitting={submitting}
-            formSuccess={formSuccess}
-            formError={formError}
-            inputError={usernameError || passwordError ? true : false}
-          >
-            <UsernameInput
-              placeholder="Choose a username"
-              state={username}
-              setState={setUsername}
-              error={usernameError}
-            />
-            <PasswordInput
-              placeholder="Choose a password"
-              state={password}
-              setState={setPassword}
-              error={passwordError}
-            />
-          </Form>
-        </RoundedWhiteBox>
-      </div>
+    <Base
+      title="Sign Up"
+      subText="Already have an account?"
+      subLink={`${window.location.origin}/login`}
+      subLinkText="Sign in"
+      bgColor="signup-bg"
+    >
+      <Form
+        onSubmit={onSubmit}
+        submitText="Sign up"
+        submitting={submitting}
+        formSuccess={formSuccess}
+        formError={formError}
+        inputError={usernameError || passwordError ? true : false}
+      >
+        <UsernameInput
+          placeholder="Choose a username"
+          value={username}
+          setValue={setUsername}
+          error={usernameError}
+        />
+        <PasswordInput
+          placeholder="Choose a password"
+          value={password}
+          setValue={setPassword}
+          error={passwordError}
+        />
+      </Form>
     </Base>
   );
 };

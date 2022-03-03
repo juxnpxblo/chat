@@ -1,69 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Chat, Login, SignUp } from './views';
-
 import io from 'socket.io-client';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+import { Chat, Login, SignUp } from './views';
 
 import './index.css';
 
-import userContext from './utils/userContext';
+const server =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:5000'
+    : window.location.origin;
+
+const socket = io(server, {
+  cors: {
+    origin: server,
+    credentials: true,
+  },
+  transports: ['websocket', 'polling'],
+});
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState('');
 
-  const socket = io(
-    `${
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:5000'
-        : window.location.origin
-    }`,
-    {
-      cors: {
-        origin: `${
-          process.env.NODE_ENV === 'development'
-            ? 'http://localhost:5000'
-            : window.location.origin
-        }`,
-        credentials: true,
-      },
-      transports: ['websocket', 'polling'],
-    }
-  );
-
-  useEffect(() => {
-    if (loggedUser) socket.emit('username', loggedUser);
-  }, [socket, loggedUser]);
-
   return (
-    <userContext.Provider value={{ loggedUser, setLoggedUser }}>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              loggedUser ? <Chat socket={socket} /> : <Navigate to="/login" />
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              loggedUser ? <Navigate to="/" /> : <Login socket={socket} />
-            }
-          />
-          <Route
-            path="/register"
-            element={loggedUser ? <Navigate to="/" /> : <SignUp />}
-          />
-          <Route
-            path="/*"
-            element={
-              loggedUser ? <Navigate to="/" /> : <Navigate to="/login" />
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </userContext.Provider>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            loggedUser ? (
+              <Chat socket={socket} loggedUser={loggedUser} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            loggedUser ? (
+              <Navigate to="/" />
+            ) : (
+              <Login setLoggedUser={setLoggedUser} />
+            )
+          }
+        />
+        <Route
+          path="/register"
+          element={loggedUser ? <Navigate to="/" /> : <SignUp />}
+        />
+        <Route
+          path="/*"
+          element={loggedUser ? <Navigate to="/" /> : <Navigate to="/login" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

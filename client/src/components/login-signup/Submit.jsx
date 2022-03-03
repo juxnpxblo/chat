@@ -1,7 +1,7 @@
 import { MdOutlineArrowForward } from 'react-icons/md';
 import { AiOutlineLoading } from 'react-icons/ai';
 
-const Submit = ({ error, submitText, submitting }) => {
+const Submit = ({ submitText, submitting, error }) => {
   return (
     <div className="relative text-white flex items-center justify-center">
       {submitting && (
