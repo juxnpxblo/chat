@@ -26,12 +26,12 @@ io.on('connection', (client) => {
     io.emit('connected');
   });
 
-  client.on('new message', async (newMessage) => {
+  client.on('new message', async ({ message, sender }) => {
     const res = await axios.post(
       `${inHeroku ? '/api/chat' : 'http://localhost:5000/api/chat'}`,
       {
-        message: newMessage,
-        sender: users[client.id].username,
+        message,
+        sender,
       }
     );
     io.emit('new message', res.data.rows[0]);

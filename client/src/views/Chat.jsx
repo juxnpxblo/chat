@@ -53,7 +53,7 @@ const Chat = ({ socket }) => {
             )
           )}
         </div>
-        <Form socket={socket} />
+        <Form socket={socket} loggedUser={loggedUser} />
       </div>
     </div>
   );

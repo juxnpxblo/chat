@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { RiSendPlaneFill } from 'react-icons/ri';
 
-const Form = ({ socket }) => {
+const Form = ({ socket, loggedUser }) => {
   const [newMessage, setNewMessage] = useState('');
 
   return (
@@ -11,7 +11,7 @@ const Form = ({ socket }) => {
         e.preventDefault();
         if (newMessage.length > 160 || !newMessage) return;
         setNewMessage('');
-        socket.emit('new message', newMessage);
+        socket.emit('new message', { message: newMessage, sender: loggedUser });
       }}
     >
       <div className="grow">
