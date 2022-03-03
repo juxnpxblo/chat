@@ -40,6 +40,8 @@ const SignUp = () => {
     }
   };
 
+  useEffect(() => (document.title = 'Chat • Login'), []);
+
   useEffect(() => {
     setUsernameError(usernameErrorCheck());
     setPasswordError(passwordErrorCheck());

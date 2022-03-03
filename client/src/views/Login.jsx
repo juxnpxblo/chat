@@ -1,6 +1,6 @@
 import api from '../api/api';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import URL from '../utils/URL';
 import {
   Base,
@@ -18,6 +18,8 @@ import userContext from '../utils/userContext';
 import io from 'socket.io-client';
 
 const Login = ({ socket }) => {
+  useEffect(() => (document.title = 'Chat • Login'), []);
+
   const { setLoggedUser } = useContext(userContext);
 
   const [submitting, setSubmitting] = useState(false);
