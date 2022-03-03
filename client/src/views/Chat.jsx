@@ -29,7 +29,7 @@ const Chat = ({ loggedUser, socket }) => {
       <div className="h-full flex flex-col mx-4 py-3 ">
         <div
           ref={MessagesBoxRef}
-          className="bg-white rounded-t-lg overflow-y-scroll flex flex-col gap-4 p-4 overflow-x-hidden"
+          className="bg-white grow rounded-t-lg overflow-y-scroll flex flex-col gap-4 p-4 overflow-x-hidden"
         >
           {messages.map(
             ({ sender, self = sender === loggedUser, message, date }, i) => (
@@ -43,7 +43,7 @@ const Chat = ({ loggedUser, socket }) => {
             )
           )}
         </div>
-        <div className="w-full h-[10px] z-20 bg-[#c0c0c0]"></div>
+        <div className="w-full h-[1px] z-20 bg-[#c0c0c0]"></div>
         <Form socket={socket} loggedUser={loggedUser} />
       </div>
     </div>
