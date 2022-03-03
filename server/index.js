@@ -27,10 +27,13 @@ io.on('connection', (client) => {
   });
 
   client.on('new message', async (newMessage) => {
-    const res = await axios.post('http://localhost:5000/api/chat', {
-      message: newMessage,
-      sender: users[client.id].username,
-    });
+    const res = await axios.post(
+      `${inHeroku ? '/api/chat' : 'http://localhost:5000/api/chat'}`,
+      {
+        message: newMessage,
+        sender: users[client.id].username,
+      }
+    );
     io.emit('new message', res.data.rows[0]);
   });
 
@@ -55,10 +58,8 @@ if (inHeroku) {
   app.use(express.static(path.resolve(__dirname, '../client/build')));
 
   app.get('*', function (req, res) {
-    res.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
   });
 }
 
 server.listen(PORT, () => console.log(`running at http://localhost:${PORT}`));
-
-// app.listen(PORT, () => console.log(`running at http://localhost:${PORT}`));

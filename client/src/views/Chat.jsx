@@ -35,24 +35,24 @@ const Chat = ({ socket }) => {
   }, [socket]);
 
   return (
-    <div className="h-[100vh] shadow-2xl rounded-lg mx-auto border max-w-[1024px] flex flex-col scroll-smooth overflow-auto">
-      <div
-        ref={MessagesBoxRef}
-        className="bg-white grow overflow-y-scroll flex flex-col gap-4 px-4 pt-4 pb-[4.5rem] overflow-x-hidden overflow-auto"
-      >
-        {messages.map(
-          ({ sender, self = sender === loggedUser, message, date }, i) => (
-            <Message
-              key={i}
-              self={self}
-              sender={sender}
-              message={message}
-              date={date}
-            />
-          )
-        )}
-      </div>
-      <div className="bg-transparent relative w-full z-10">
+    <div className="h-[100vh] rounded-lg mx-auto max-w-[796px]">
+      <div className="h-full flex flex-col gap-2 mx-4 py-3">
+        <div
+          ref={MessagesBoxRef}
+          className="bg-white rounded-lg overflow-y-scroll flex flex-col gap-4 p-4 overflow-x-hidden"
+        >
+          {messages.map(
+            ({ sender, self = sender === loggedUser, message, date }, i) => (
+              <Message
+                key={i}
+                self={self}
+                sender={sender}
+                message={message}
+                date={date}
+              />
+            )
+          )}
+        </div>
         <Form socket={socket} />
       </div>
     </div>

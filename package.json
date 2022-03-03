@@ -1,0 +1,24 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "build": "cd server && npm install && cd ../client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juxnpxblo/chat.git"
+  },
+  "keywords": [],
+  "author": "juxnpxblo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juxnpxblo/chat/issues"
+  },
+  "homepage": "https://github.com/juxnpxblo/chat#readme",
+  "engines": {
+    "node": "16.x"
+  }
+}

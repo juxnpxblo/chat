@@ -6,7 +6,7 @@ const Form = ({ socket }) => {
 
   return (
     <form
-      className="flex absolute bottom-0 w-full"
+      className="flex gap-2 items-center justify-center relative"
       onSubmit={(e) => {
         e.preventDefault();
         if (newMessage.length > 160 || !newMessage) return;
@@ -14,29 +14,25 @@ const Form = ({ socket }) => {
         socket.emit('new message', newMessage);
       }}
     >
-      <div className="grow pl-4 pr-14 pb-3">
+      <div className="grow">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           maxLength={160}
           placeholder="Type your message..."
-          className="w-full outline-none border rounded-lg p-2.5 focus:border-[#262626] input-shadow"
+          className="w-full outline-none border rounded-lg p-2.5 pr-[2.9rem] focus:border-[#262626] shadow-lg"
         />
       </div>
-      <label>
-        <input type="submit" value=" " className="" />
+      <label className="absolute right-1.5 bottom-1.5">
+        <input type="submit" value=" " />
         <div
           className={`${
-            newMessage ? 'bg-[#146aff]' : 'bg-[#a5c6ff]'
-          } transition-colors justify-center w-[36px] h-[36px] rounded-md absolute top-1.5 right-4 cursor-pointer`}
+            newMessage ? 'bg-[#146aff]' : 'bg-[#87b3ff]'
+          } w-[34px] h-[34px] transition-colors shadow-lg border-2 flex items-center justify-center top-0 rounded-md cursor-pointer`}
         >
-          <div className="w-full h-full flex items-center input-shadow rounded-md">
-            <RiSendPlaneFill
-              size={24}
-              color="white"
-              className="absolute left-[5px] bottom-[6px]"
-            />
+          <div>
+            <RiSendPlaneFill size={20} color="white" />
           </div>
         </div>
       </label>
