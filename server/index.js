@@ -55,6 +55,8 @@ const chatRouter = require('./routes/chatRouter');
 app.use('/api/chat', chatRouter);
 
 if (inHeroku) {
+  const path = require('path');
+
   app.use(express.static(path.resolve(__dirname, '../client/build')));
 
   app.get('*', function (req, res) {
