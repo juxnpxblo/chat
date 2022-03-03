@@ -19,6 +19,14 @@ const App = () => {
         : window.location.origin
     }`,
     {
+      cors: {
+        origin: `${
+          process.env.NODE_ENV === 'development'
+            ? 'http://localhost:5000'
+            : window.location.origin
+        }`,
+        credentials: true,
+      },
       transports: ['websocket', 'polling'],
     }
   );
