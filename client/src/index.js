@@ -7,10 +7,7 @@ import { Chat, Login, SignUp } from './views';
 
 import './index.css';
 
-const server =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5000'
-    : window.location.origin;
+const server = process.env.REACT_APP_SERVER_URL || window.location.origin;
 
 const socket = io(server, {
   cors: {
