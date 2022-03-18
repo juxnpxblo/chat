@@ -2,10 +2,10 @@
   "name": "chat",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "node server",
-    "build": "cd server && npm install && cd ../client && npm install && npm run build"
+    "start": "ts-node server/src/",
+    "build": "cd server && npm install && cd src/config/database && ts-node init.ts && cd ../../../../client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "homepage": "https://github.com/juxnpxblo/chat#readme",
   "engines": {
     "node": "16.x"
+  },
+  "dependencies": {
+    "ts-node": "^10.7.0"
   }
 }

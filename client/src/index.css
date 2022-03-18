@@ -20,8 +20,60 @@ body {
 }
 #root {
   height: 100vh;
-  background-color: #0cbaba;
-  background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%);
+  background-color: #00c2ff;
+  opacity: 1;
+
+  /* generated on www.magicpattern.design */
+  background-image: linear-gradient(
+      30deg,
+      #eeeeee 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #eeeeee 87.5%,
+      #eeeeee
+    ),
+    linear-gradient(
+      150deg,
+      #eeeeee 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #eeeeee 87.5%,
+      #eeeeee
+    ),
+    linear-gradient(
+      30deg,
+      #eeeeee 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #eeeeee 87.5%,
+      #eeeeee
+    ),
+    linear-gradient(
+      150deg,
+      #eeeeee 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #eeeeee 87.5%,
+      #eeeeee
+    ),
+    linear-gradient(
+      60deg,
+      #eeeeee77 25%,
+      transparent 25.5%,
+      transparent 75%,
+      #eeeeee77 75%,
+      #eeeeee77
+    ),
+    linear-gradient(
+      60deg,
+      #eeeeee77 25%,
+      transparent 25.5%,
+      transparent 75%,
+      #eeeeee77 75%,
+      #eeeeee77
+    );
+  background-size: 22px 39px;
+  background-position: 0 0, 0 0, 11px 19px, 11px 19px, 0 0, 11px 19px;
 }
 
 /* Background gradients */
@@ -37,7 +89,7 @@ body {
 
 /* Login/Sign up inputs behavior */
 
-/* Icons colors defined here so they can be overwritten here */
+/* Icons color defined here so they can be overwritten here */
 .input-icon {
   color: #9ca3af;
 }
