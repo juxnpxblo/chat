@@ -24,7 +24,7 @@ const SignUp = () => {
     if (username.search(/\W/) !== -1) {
       return 'Only letters and numbers allowed.';
     } else if (username.length < 5 || username.length > 16) {
-      return 'Username must be between 5 and 16 characters long.';
+      return 'Username must be between 5~16 characters long.';
     } else {
       return '';
     }
@@ -32,7 +32,7 @@ const SignUp = () => {
 
   const getPasswordError = () => {
     if (password.length < 5 || password.length > 50) {
-      return 'Password must be between 5 and 50 characters long.';
+      return 'Password must be between 5~50 characters long.';
     } else {
       return '';
     }

@@ -31,7 +31,7 @@ const Chat = () => {
 
   return (
     <div className="h-[100vh] rounded-lg mx-auto max-w-[796px]">
-      <div className="h-full flex flex-col mx-4 py-3 ">
+      <div className="h-full flex flex-col shadow-2xl">
         <div
           ref={MessagesBoxRef}
           className="bg-white grow rounded-t-lg overflow-y-scroll flex flex-col gap-4 p-4 overflow-x-hidden"

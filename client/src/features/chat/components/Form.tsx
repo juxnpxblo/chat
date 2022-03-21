@@ -24,7 +24,7 @@ const Form = ({ socket }: { socket: Socket }) => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           maxLength={160}
-          placeholder="Type your message..."
+          placeholder="Type in your message..."
           className="w-full outline-none border rounded-b-lg p-2.5 pr-[2.9rem]"
         />
       </div>
